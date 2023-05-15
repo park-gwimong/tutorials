@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="EurekaServer" />
+        <module name="ConfigClient" />
+        <module name="Customers" />
+        <module name="ConfigServer" />
+        <module name="Catalogs" />
+        <module name="Sidecar" />
+        <module name="ZuulServer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="msa_samples_v1.2.0" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Catalogs" options="-parameters" />
+      <module name="ConfigClient" options="-parameters" />
+      <module name="ConfigServer" options="-parameters" />
+      <module name="Customers" options="-parameters" />
+      <module name="EurekaServer" options="-parameters" />
+      <module name="Sidecar" options="-parameters" />
+      <module name="ZuulServer" options="-parameters" />
+    </option>
+  </component>
+</project>
