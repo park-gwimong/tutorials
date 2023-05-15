@@ -1,0 +1,33 @@
+#!/usr/bin/expect -f
+
+proc usage {} {
+    puts "usage: ip_address password"
+    exit 1
+}
+
+proc login { host user password } {
+    puts "Connect server...\n"
+    spawn ssh $user@$host
+    expect {
+        -re "No route" { exit 1 }
+        -re "try again" { exit 1 }
+        -re "yes/no" { send "yes\r"; exp_continue }
+        -re "password:" { send "$password\r"; }
+    }
+    send "exit";
+}
+
+set timeout -1
+set HOST [lindex $argv 0]
+set USERID [lindex $argv 1]
+set PASSWD [lindex $argv 2]
+set argc [llength $argv]
+
+if { [llength $argv] != 3 } {
+    usage
+}
+
+set running [login $HOST $USERID $PASSWD ]
+
+
+exit 0

@@ -1,0 +1,3 @@
+ls -al > 1.txt
+cat 1.txt
+mv 1.txt 2.txt

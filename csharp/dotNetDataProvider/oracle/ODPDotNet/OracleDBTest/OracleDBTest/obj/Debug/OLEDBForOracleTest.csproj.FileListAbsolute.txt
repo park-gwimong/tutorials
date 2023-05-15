@@ -1,0 +1,12 @@
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\bin\Debug\OracleDBTest.exe.config
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\bin\Debug\OracleDBTest.exe
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\bin\Debug\OracleDBTest.pdb
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OracleDBTest.Form1.resources
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OracleDBTest.Properties.Resources.resources
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OLEDBForOracleTest.csproj.GenerateResource.cache
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OLEDBForOracleTest.csproj.CoreCompileInputs.cache
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OracleDBTest.exe
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OracleDBTest.pdb
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OLEDBForOracleTest.csprojAssemblyReference.cache
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\bin\Debug\Oracle.ManagedDataAccess.dll
+C:\Users\gmpar\source\repos\OracleDBTest\OracleDBTest\obj\Debug\OLEDBForOracleTest.csproj.CopyComplete
