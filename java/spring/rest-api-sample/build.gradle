@@ -23,7 +23,7 @@ plugins {
     id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
-group = 'dms-api'
+group = 'rest-api-sample'
 version = 'v1.000-SNAPSHOT'
 sourceCompatibility = 11
 
