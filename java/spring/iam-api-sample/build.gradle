@@ -1,0 +1,105 @@
+import org.hidetake.gradle.swagger.generator.GenerateSwaggerUI
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
+buildscript {
+    ext {
+        springBootVersion = '2.7.0'
+        restdocsApiSpecVersion = '0.16.2'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+plugins {
+    id 'org.springframework.boot' version "${springBootVersion}"
+    id 'com.epages.restdocs-api-spec' version "${restdocsApiSpecVersion}"
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+    id 'org.hidetake.swagger.generator' version '2.19.2'
+    id 'java'
+}
+
+group = 'sample.iam.api'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+swaggerSources {
+    sample {
+        setInputFile(file("${project.buildDir}/api-spec/openapi3.yaml"))
+    }
+}
+
+openapi3 {
+    setServer("http://localhost:9000")
+    title = "restdocs-swagger API Documentation"
+    description = "Spring REST Docs with SwaggerUI."
+    version = "0.0.1"
+    format = "yaml"
+
+}
+
+configurations {
+    providedRuntime
+}
+
+dependencies {
+    /* Spring boot */
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    /* DB Connector */
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    /* lombok */
+    implementation "org.projectlombok:lombok"
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    // swaggerUI
+    swaggerUI 'org.webjars:swagger-ui:4.18.2'
+    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
+    //implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
+//    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    //compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+
+    /* Test */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation "com.epages:restdocs-api-spec-restassured:${restdocsApiSpecVersion}"
+    testImplementation 'io.rest-assured:rest-assured'
+}
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.withType(GenerateSwaggerUI).configureEach {
+    dependsOn 'openapi3'
+}
+
+tasks.register('copySwaggerUI', Copy) {
+    dependsOn 'generateSwaggerUISample'
+
+    def generateSwaggerUISampleTask = tasks.named('generateSwaggerUISample', GenerateSwaggerUI).get()
+
+    from("${generateSwaggerUISampleTask.outputDir}")
+    into("${project.buildDir}/resources/main/docs")
+}
+
+tasks.withType(BootJar).configureEach {
+    dependsOn 'copySwaggerUI'
+}
