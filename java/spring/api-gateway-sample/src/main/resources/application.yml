@@ -1,0 +1,51 @@
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include:
+#          - "gateway"
+spring:
+  application:
+    name: gateway-server
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+
+  cloud:
+    gateway:
+      default-filters:
+#        - PrefixPath=/v1
+        - AddRequestHeader=X-Request-Header, req
+        - AddResponseHeader=X-Response-Header, res
+      routes:
+        - id: auth_route
+          uri: http://localhost:9000
+          predicates:
+            - Path=/auth/**
+        - id: user_route
+          uri: http://localhost:9000
+          predicates:
+            - Path=/api/users/**
+          filters:
+            - JwtAuthentication=ROLE_USER
+#            - RewritePath=/users/?(?<segment>.*), /api/users/$\{segment}
+        - id: device_route
+          uri: http://localhost:9001
+          predicates:
+            - Path=/api/devices/**
+          filters:
+            - JwtAuthentication=ROLE_USER
+        - id: default_route
+          uri: http://localhost:9999
+          predicates:
+            - Path=/**
+
+logging:
+  file:
+    name: ./log
+
+jwt:
+  secret: secret
+  expiration-second: 28800
