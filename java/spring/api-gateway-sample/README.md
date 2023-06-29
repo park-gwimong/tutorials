@@ -1,4 +1,4 @@
-Smart Device Management System
+Identity and Access Management System
 ==============================
 API Gateway
 -----------------------------
