@@ -1,4 +1,4 @@
-Identity and Access Management System
+API Gateway System
 ==============================
 API Gateway
 -----------------------------
