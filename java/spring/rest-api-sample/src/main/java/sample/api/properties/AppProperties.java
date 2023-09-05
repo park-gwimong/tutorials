@@ -2,7 +2,9 @@ package sample.api.properties;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -12,44 +14,44 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @PropertySource("classpath:application.yml")
+@Slf4j
 @Data
 public class AppProperties {
 
-  private String serverAddress;
+    private String serverAddress;
 
-  @Value("${locale}")
-  private String local;
+    @Value("${locale}")
+    private String local;
 
-  @Value("${spring.profiles.active}")
-  private String active;
+    @Value("${spring.profiles.active}")
+    private String active;
 
-  private boolean isTestMode;
+    private boolean isTestMode;
 
-  /**
-   * Gets is test mode.
-   *
-   * @return the is test mode
-   */
-  public boolean getIsTestMode() {
-    return active.equals("local");
-  }
-
-  /**
-   * Gets server address.
-   *
-   * @return the server address
-   */
-  public String getServerAddress() {
-
-    InetAddress ip;
-    try {
-      ip = InetAddress.getLocalHost();
-      serverAddress = ip.getHostAddress();
-
-    } catch (UnknownHostException e) {
-
-      e.printStackTrace();
+    /**
+     * Gets is test mode.
+     *
+     * @return the is test mode
+     */
+    public boolean getIsTestMode() {
+        return active.equals("local");
     }
-    return serverAddress;
-  }
+
+    /**
+     * Gets server address.
+     *
+     * @return the server address
+     */
+    public String getServerAddress() {
+
+        InetAddress ip;
+        try {
+            ip = InetAddress.getLocalHost();
+            serverAddress = ip.getHostAddress();
+
+        } catch (UnknownHostException e) {
+            log.error(e.getMessage());
+        }
+        return serverAddress;
+    }
 }
