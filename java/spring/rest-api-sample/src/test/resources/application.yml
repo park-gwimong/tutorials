@@ -1,0 +1,53 @@
+# Spring config
+spring:
+  profiles:
+    active: test
+  datasource:
+    url: jdbc:mysql://localhost:3306/dms?autoReconnect=true&useSSL=false&useUnicode-true&characterEncoding=utf8
+    username: dms
+    password: dms
+    driverClassName: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create # none, create, update, validate
+    show-sql: true
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    static-path-pattern: /templates/**
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  sql:
+    init:
+      mode: always # never, always
+      platform: mysql
+      data-locations: classpath:sql/*.sql
+      continue-on-error: true
+  messages:
+    basename: messages
+    encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+# Server config
+server:
+  port: 9001
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    session:
+      timeout: -1
+
+# Log config
+logging:
+  file:
+    name: ./log
+
+
+locale: en

@@ -26,7 +26,7 @@ import org.springframework.test.context.TestPropertySource;
 @AutoConfigureMockMvc
 @ExtendWith(RestDocumentationExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@TestPropertySource(locations = "/application-test.properties")
+@TestPropertySource(locations = "/application.yml")
 public abstract class BaseControllerTest {
 
   /**

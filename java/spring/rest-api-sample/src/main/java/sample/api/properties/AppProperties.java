@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * The type App properties.
  */
 @Component
-@PropertySource("classpath:application.properties")
+@PropertySource("classpath:application.yml")
 @Data
 public class AppProperties {
 

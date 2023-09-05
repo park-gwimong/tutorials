@@ -1,0 +1,39 @@
+# Spring config
+spring:
+  profiles:
+    active: local
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    static-path-pattern: /templates/**
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+  sql:
+    init:
+      platform: mysql
+      data-locations: classpath:sql/*.sql
+      continue-on-error: true
+  messages:
+    basename: messages
+    encoding: UTF-8
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+
+# Server config
+server:
+  port: 9001
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    session:
+      timeout: -1
+
+# Log config
+logging:
+  file:
+    name: ./log
+
