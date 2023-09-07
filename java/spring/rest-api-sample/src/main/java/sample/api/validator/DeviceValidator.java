@@ -19,7 +19,7 @@ import sample.api.messages.ValidateMessages;
 public class DeviceValidator implements Validator {
 
     @Override
-    public boolean supports(Class<?> c) {
+    public boolean supports(@NonNull Class<?> c) {
         return RequestDeviceDTO.class.equals(c);
     }
 
@@ -27,17 +27,16 @@ public class DeviceValidator implements Validator {
     public void validate(@NonNull Object o, @NonNull Errors errors) {
         RequestDeviceDTO requestDeviceDto = (RequestDeviceDTO) o;
 
-        validateClassification(requestDeviceDto, errors);
+        validateClassification(errors);
         validateSn(requestDeviceDto, errors);
     }
 
     /**
      * Validate classification.
      *
-     * @param requestDeviceDto the device entity
      * @param errors           the errors
      */
-    public void validateClassification(RequestDeviceDTO requestDeviceDto, Errors errors) {
+    public void validateClassification( Errors errors) {
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "statusClassification", ValidateMessages.NOT_EMPTY);
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "typeClassification", ValidateMessages.NOT_EMPTY);
