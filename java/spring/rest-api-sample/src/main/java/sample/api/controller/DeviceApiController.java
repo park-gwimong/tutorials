@@ -47,7 +47,9 @@ public class DeviceApiController {
             if (bindingResult.hasErrors()) {
                 throw new BindException(bindingResult);
             }
-            responseDeviceDto = new ResponseDeviceDTO().fromEntity(deviceService.create(requestDeviceDto.toEntity()));
+            DeviceEntity sourceDeviceEntity = requestDeviceDto.toEntity();
+            DeviceEntity createdDeviceEntity = deviceService.create(sourceDeviceEntity);
+            responseDeviceDto = new ResponseDeviceDTO().fromEntity(createdDeviceEntity);
         } catch (NullPointerException | DatabaseException e) {
             throw e;
         } catch (Exception e) {
@@ -107,7 +109,8 @@ public class DeviceApiController {
 
         ResponseDeviceDTO responseDeviceDTO;
         try {
-            responseDeviceDTO = new ResponseDeviceDTO().fromEntity(deviceService.read(deviceId));
+            DeviceEntity targetDeviceEntity = deviceService.read(deviceId);
+            responseDeviceDTO = new ResponseDeviceDTO().fromEntity(targetDeviceEntity);
         } catch (NotFoundException e) {
             return RestApiResponse.successWithNoContent();
         } catch (Exception e) {
@@ -144,7 +147,9 @@ public class DeviceApiController {
             if (bindingResult.hasErrors()) {
                 throw new BindException(bindingResult);
             }
-            responseDeviceDTO = new ResponseDeviceDTO().fromEntity(deviceService.patch(deviceId, requestDeviceDTO.toEntity()));
+            DeviceEntity sourceDeviceEntity = requestDeviceDTO.toEntity();
+            DeviceEntity pachtedDeviceEntity = deviceService.patch(deviceId, sourceDeviceEntity);
+            responseDeviceDTO = new ResponseDeviceDTO().fromEntity(pachtedDeviceEntity);
 
         } catch (NotFoundException | DatabaseException | NullPointerException e) {
             throw e;
@@ -176,7 +181,8 @@ public class DeviceApiController {
 
         ResponseDeviceDTO responseDeviceDTO;
         try {
-            responseDeviceDTO = new ResponseDeviceDTO().fromEntity(deviceService.read(deviceId));
+            DeviceEntity targetDeviceEntity = deviceService.read(deviceId);
+            responseDeviceDTO = new ResponseDeviceDTO().fromEntity(targetDeviceEntity);
             if (responseDeviceDTO == null) {
                 throw new NotFoundException("Not found deviceId [" + deviceId + "]");
             }
