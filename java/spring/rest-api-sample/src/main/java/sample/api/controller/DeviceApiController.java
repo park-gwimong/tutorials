@@ -110,6 +110,9 @@ public class DeviceApiController {
         ResponseDeviceDTO responseDeviceDTO;
         try {
             DeviceEntity targetDeviceEntity = deviceService.read(deviceId);
+            if (targetDeviceEntity == null) {
+                return RestApiResponse.successWithNoContent();
+            }
             responseDeviceDTO = new ResponseDeviceDTO().fromEntity(targetDeviceEntity);
         } catch (NotFoundException e) {
             return RestApiResponse.successWithNoContent();

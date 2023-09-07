@@ -1,18 +1,23 @@
 package sample.api.test.e2e;
 
-import sample.api.domain.entity.DeviceEntity;
+import com.epages.restdocs.apispec.ResourceSnippetParameters;
+import com.epages.restdocs.apispec.Schema;
+import org.junit.jupiter.api.*;
+import org.springframework.restdocs.payload.FieldDescriptor;
+import sample.api.domain.dto.RequestDeviceDTO;
 import sample.api.domain.enums.device.classification.os.DeviceOsClassification;
 import sample.api.domain.enums.device.classification.status.DeviceStatusClassification;
 import sample.api.domain.enums.device.classification.type.DeviceTypeClassification;
 import sample.api.domain.enums.device.code.status.DeviceStatusCode;
 import org.hamcrest.Matchers;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.restdocs.snippet.Snippet;
 
+import java.util.Arrays;
+import java.util.List;
+
+import static com.epages.restdocs.apispec.ResourceDocumentation.resource;
 import static com.epages.restdocs.apispec.RestAssuredRestDocumentationWrapper.document;
 import static io.restassured.RestAssured.given;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -22,10 +27,17 @@ import static org.springframework.restdocs.request.RequestDocumentation.pathPara
 /**
  * The type Device controller test.
  */
+@DisplayName("Device Controller Test")
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class DeviceControllerTest extends BaseControllerTest {
 
-    private static final Snippet REQUEST_FIELDS = requestFields(
-            fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
+    private final String DOC_PATH = "DeviceControllerTest/" + DEFAULT_DOC_PATH;
+    private final String SNIPPET_TAG = "Device";
+
+    private final String REQUEST_MAPPING_PATH = "/api/devices";
+    private final Schema REQUEST_FIELDS_SCHEMA = Schema.schema("RequestDeviceDto");
+
+    private final List<FieldDescriptor> REQUEST_FIELDS = Arrays.asList(
             fieldWithPath("sn").type(JsonFieldType.STRING).description("시리얼 번호"),
             fieldWithPath("typeClassification").type(JsonFieldType.STRING).description("타입 분류"),
             fieldWithPath("osClassification").type(JsonFieldType.STRING).description("OS 분류"),
@@ -40,7 +52,9 @@ class DeviceControllerTest extends BaseControllerTest {
             fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정일").optional()
     );
 
-    private static final Snippet RESPONSE_FIELDS = responseFields(
+    private final Schema RESPONSE_FIELDS_SCHEMA = Schema.schema("ResponseDeviceDto");
+
+    private final List<FieldDescriptor> RESPONSE_FIELDS = Arrays.asList(
             fieldWithPath("id").type(JsonFieldType.NUMBER).description("ID"),
             fieldWithPath("sn").type(JsonFieldType.STRING).description("시리얼 번호"),
             fieldWithPath("typeClassification").type(JsonFieldType.STRING).description("타입 분류"),
@@ -56,7 +70,9 @@ class DeviceControllerTest extends BaseControllerTest {
             fieldWithPath("updatedAt").type(JsonFieldType.STRING).description("수정일").optional()
     );
 
-    private static final Snippet RESPONSE_FIELDS_PAGE = responseFields(
+    private final Schema RESPONSE_FIELDS_PAGE_SCHEMA = Schema.schema("Page<ResponseDeviceDto>");
+
+    private final List<FieldDescriptor> RESPONSE_FIELDS_PAGE = Arrays.asList(
             fieldWithPath("content").description("내용"),
             fieldWithPath("content.[].createdAt").description("내용").optional(),
             fieldWithPath("content.[].updatedAt").description("내용").optional(),
@@ -94,184 +110,318 @@ class DeviceControllerTest extends BaseControllerTest {
             fieldWithPath("empty").description("생성일")
     );
 
-    /**
-     * Device create api test.
-     */
-    @Test
-    @DisplayName("Test the API that create the device to the system.")
-    void deviceCreateApiTest() {
 
-        DeviceEntity newDeviceEntity = DeviceEntity.builder()
-                .statusClassification(DeviceStatusClassification.NEW_DEVICE)
-                .osClassification(DeviceOsClassification.WINDOWS_OS)
-                .typeClassification(DeviceTypeClassification.NOTEBOOK)
-                .sn("999999").build();
+    @Nested
+    class Describe_create_api {
+        @Nested
+        class Context_without_required_fields {
+            @Test
+            void it_returns_bad_request() {
 
-        given(this.spec)
-                .filter(document(DEFAULT_DOC_PATH, REQUEST_FIELDS, RESPONSE_FIELDS))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .header("Content-type", "application/json")
-                .body(newDeviceEntity)
-                .log()
-                .all()
-                .when()
-                .post("/api/devices")
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("statusClassification",
-                        Matchers.equalTo(DeviceStatusClassification.NEW_DEVICE.name()))
-                .body("osClassification",
-                        Matchers.equalTo(DeviceOsClassification.WINDOWS_OS.name()))
-                .body("typeClassification",
-                        Matchers.equalTo(DeviceTypeClassification.NOTEBOOK.name()))
-                .body("sn",
-                        Matchers.equalTo("999999"))
-                .body("modelName",
-                        Matchers.nullValue())
-                .body("educationInstitution",
-                        Matchers.nullValue())
-                .body("macAddress",
-                        Matchers.nullValue())
-                .body("statusCode",
-                        Matchers.equalTo(DeviceStatusCode.POSSESSION.name()))
-                .body("deviceUsed",
-                        Matchers.nullValue());
+                RequestDeviceDTO dto =
+                        RequestDeviceDTO
+                                .builder()
+                                .build();
+
+                given(DeviceControllerTest.this.spec)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Content-type", "application/json")
+                        .body(dto)
+                        .log()
+                        .all()
+                        .when()
+                        .post(REQUEST_MAPPING_PATH)
+                        .then()
+                        .statusCode(HttpStatus.BAD_REQUEST.value());
+            }
+        }
+
+        @Nested
+        class Context_with_contains_required_fields {
+            @Test
+            @DisplayName("Test the API that create the device to the system.")
+            void it_returns_what_was_created() {
+
+                RequestDeviceDTO requestDeviceDTO =
+                        RequestDeviceDTO.builder()
+                                .statusClassification(DeviceStatusClassification.NEW_DEVICE)
+                                .osClassification(DeviceOsClassification.WINDOWS_OS)
+                                .typeClassification(DeviceTypeClassification.NOTEBOOK)
+                                .sn("999999").build();
+
+                given(DeviceControllerTest.this.spec)
+                        .filter(document(DeviceControllerTest.this.DOC_PATH,
+                                resource(
+                                        ResourceSnippetParameters.builder()
+                                                .tag(SNIPPET_TAG)
+                                                .requestSchema(REQUEST_FIELDS_SCHEMA)
+                                                .requestFields(REQUEST_FIELDS)
+                                                .responseSchema(RESPONSE_FIELDS_SCHEMA)
+                                                .responseFields(RESPONSE_FIELDS)
+                                                .summary("CREATE")
+                                                .description("API to request create of device ")
+                                                .build()
+                                )))
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Content-type", "application/json")
+                        .body(requestDeviceDTO)
+                        .log()
+                        .all()
+                        .when()
+                        .post(REQUEST_MAPPING_PATH)
+                        .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("statusClassification",
+                                Matchers.equalTo(DeviceStatusClassification.NEW_DEVICE.name()))
+                        .body("osClassification",
+                                Matchers.equalTo(DeviceOsClassification.WINDOWS_OS.name()))
+                        .body("typeClassification",
+                                Matchers.equalTo(DeviceTypeClassification.NOTEBOOK.name()))
+                        .body("sn",
+                                Matchers.equalTo("999999"))
+                        .body("modelName",
+                                Matchers.nullValue())
+                        .body("educationInstitution",
+                                Matchers.nullValue())
+                        .body("macAddress",
+                                Matchers.nullValue())
+                        .body("statusCode",
+                                Matchers.equalTo(DeviceStatusCode.POSSESSION.name()))
+                        .body("deviceUsed",
+                                Matchers.nullValue());
+            }
+        }
     }
 
-    /**
-     * Device read api test.
-     */
-    @Test
-    @DisplayName("Test the API that read a device information.")
-    void deviceReadApiTest() {
+    @Nested
+    class Describe_read_api {
 
-        given(this.spec)
-                .filter(document(DEFAULT_DOC_PATH,
-                        pathParameters(
-                                parameterWithName("deviceId").description("Device ID")
-                        ),
-                        RESPONSE_FIELDS))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .header("Content-type", "application/json")
-                .log()
-                .all()
-                .when()
-                .get("/api/devices/{deviceId}", 1)
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("statusClassification",
-                        Matchers.equalTo(DeviceStatusClassification.NEW_DEVICE.name()))
-                .body("osClassification",
-                        Matchers.equalTo(DeviceOsClassification.WINDOWS_OS.name()))
-                .body("typeClassification",
-                        Matchers.equalTo(DeviceTypeClassification.TABLET.name()))
-                .body("sn",
-                        Matchers.equalTo("000001"))
-                .body("modelName",
-                        Matchers.equalTo("Test1"))
-                .body("educationInstitution",
-                        Matchers.is("1"))
-                .body("macAddress",
-                        Matchers.nullValue())
-                .body("statusCode",
-                        Matchers.equalTo(DeviceStatusCode.RENTAL.name()))
-                .body("deviceUsed",
-                        Matchers.nullValue());
+        private final int contentId = 1;
+        private final int withoutContentId = 10;
+
+        @Nested
+        class Context_without_content {
+            @Test
+            void it_returns_no_contents() {
+                given(DeviceControllerTest.this.spec)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Content-type", "application/json")
+                        .log()
+                        .all()
+                        .when()
+                        .get(REQUEST_MAPPING_PATH + "/{deviceId}", Describe_read_api.this.withoutContentId)
+                        .then()
+                        .statusCode(HttpStatus.NO_CONTENT.value());
+            }
+        }
+
+        @Nested
+        class Context_with_contents {
+            @Test
+            void it_returns_content_normally() {
+
+                given(DeviceControllerTest.this.spec)
+                        .filter(document(DeviceControllerTest.this.DOC_PATH,
+                                resource(
+                                        ResourceSnippetParameters.builder()
+                                                .tag(SNIPPET_TAG)
+                                                .requestSchema(null)
+                                                .responseSchema(RESPONSE_FIELDS_SCHEMA)
+                                                .responseFields(RESPONSE_FIELDS)
+                                                .summary("READ")
+                                                .description("API to request device information")
+                                                .build()
+                                ),
+                                pathParameters(
+                                        parameterWithName("deviceId").description("Device ID")
+                                )))
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Content-type", "application/json")
+                        .log()
+                        .all()
+                        .when()
+                        .get(REQUEST_MAPPING_PATH + "/{deviceId}", Describe_read_api.this.contentId)
+                        .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("statusClassification",
+                                Matchers.equalTo(DeviceStatusClassification.NEW_DEVICE.name()))
+                        .body("osClassification",
+                                Matchers.equalTo(DeviceOsClassification.WINDOWS_OS.name()))
+                        .body("typeClassification",
+                                Matchers.equalTo(DeviceTypeClassification.TABLET.name()))
+                        .body("sn",
+                                Matchers.equalTo("000001"))
+                        .body("modelName",
+                                Matchers.equalTo("Test1"))
+                        .body("educationInstitution",
+                                Matchers.is("1"))
+                        .body("macAddress",
+                                Matchers.nullValue())
+                        .body("statusCode",
+                                Matchers.equalTo(DeviceStatusCode.RENTAL.name()))
+                        .body("deviceUsed",
+                                Matchers.nullValue());
+            }
+        }
+
+        @Test
+        void it_returns_content_list_normally() {
+            given(DeviceControllerTest.this.spec)
+                    .queryParam("page, 10")
+                    .queryParam("size, 0")
+                    .filter(document(DeviceControllerTest.this.DOC_PATH,
+                            resource(
+                                    ResourceSnippetParameters.builder()
+                                            .tag(SNIPPET_TAG)
+                                            .requestSchema(null)
+                                            .responseSchema(RESPONSE_FIELDS_PAGE_SCHEMA)
+                                            .responseFields(RESPONSE_FIELDS_PAGE)
+                                            .summary("READ")
+                                            .description("API to request device list")
+                                            .build()
+
+                            )))
+                    .accept(MediaType.APPLICATION_JSON_VALUE)
+                    .header("Content-type", "application/json")
+                    .log()
+                    .all()
+                    .when()
+                    .get(REQUEST_MAPPING_PATH)
+                    .then()
+                    .statusCode(HttpStatus.OK.value());
+        }
     }
 
-    /**
-     * Device read all api test.
-     */
-    @Test
-    @DisplayName("Test the API that read all device information.")
-    void deviceReadAllApiTest() {
 
-        given(this.spec)
-                .queryParam("page, 10")
-                .queryParam("size, 0")
-                .filter(document(DEFAULT_DOC_PATH,
-                        RESPONSE_FIELDS_PAGE))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .header("Content-type", "application/json")
-                .log()
-                .all()
-                .when()
-                .get("/api/devices")
-                .then()
-                .statusCode(HttpStatus.OK.value());
-    }
+    @Nested
+    class Describe_update_api {
+        private final int contentId = 2;
+        private final int withoutContentId = 20;
 
-    /**
-     * Device update api test.
-     */
-    @Test
-    @DisplayName("Test the API that update the device to the system.")
-    void deviceUpdateApiTest() {
+        @Nested
+        class Context_without_content {
+            @Test
+            void it_returns_bad_request() {
 
-        DeviceEntity targetDeviceEntity = DeviceEntity.builder()
-                .statusClassification(DeviceStatusClassification.REAPER_DEVICE)
-                .osClassification(DeviceOsClassification.IOS_OS)
-                .typeClassification(DeviceTypeClassification.TABLET)
-                .sn("000099").build();
+                RequestDeviceDTO dto =
+                        RequestDeviceDTO
+                                .builder()
+                                .build();
 
-        targetDeviceEntity.setModelName("testModel1");
-        targetDeviceEntity.setMacAddress("0000-0000-0000-0000");
-        targetDeviceEntity.setEducationInstitution("10");
+                given(DeviceControllerTest.this.spec)
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Content-type", "application/json")
+                        .body(dto)
+                        .log()
+                        .all()
+                        .when()
+                        .patch(REQUEST_MAPPING_PATH + "/{deviceId}", Describe_update_api.this.withoutContentId)
+                        .then()
+                        .statusCode(HttpStatus.BAD_REQUEST.value());
+            }
+        }
 
-        given(this.spec)
-                .filter(document(DEFAULT_DOC_PATH,
-                        pathParameters(
-                                parameterWithName("deviceId").description("Device ID")
-                        ),
-                        REQUEST_FIELDS, RESPONSE_FIELDS))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .header("Content-type", "application/json")
-                .body(targetDeviceEntity)
-                .log()
-                .all()
-                .when()
-                .patch("/api/devices/{deviceId}", 1)
-                .then()
-                .statusCode(HttpStatus.OK.value())
-                .body("statusClassification",
-                        Matchers.equalTo(DeviceStatusClassification.REAPER_DEVICE.name()))
-                .body("osClassification",
-                        Matchers.equalTo(DeviceOsClassification.IOS_OS.name()))
-                .body("typeClassification",
-                        Matchers.equalTo(DeviceTypeClassification.TABLET.name()))
-                .body("sn",
-                        Matchers.equalTo("000099"))
-                .body("modelName",
-                        Matchers.equalTo("testModel1"))
-                .body("educationInstitution",
-                        Matchers.equalTo("10"))
-                .body("macAddress",
-                        Matchers.equalTo("0000-0000-0000-0000"))
-                .body("statusCode",
-                        Matchers.equalTo(DeviceStatusCode.POSSESSION.name()))
-                .body("deviceUsed",
-                        Matchers.nullValue());
-    }
+        @Nested
+        class Context_with_contains_updated_field {
+            RequestDeviceDTO requestDeviceDTO = RequestDeviceDTO.builder()
+                    .statusClassification(DeviceStatusClassification.REAPER_DEVICE)
+                    .osClassification(DeviceOsClassification.IOS_OS)
+                    .typeClassification(DeviceTypeClassification.TABLET)
+                    .sn("000099")
+                    .modelName("testModel1")
+                    .build();
 
-    /**
-     * Device delete api test.
-     */
-    @Test
-    @DisplayName("Test the API that delete device information.")
-    void deviceDeleteApiTest() {
+            @Test
+            void it_returns_what_was_updated() {
+                given(DeviceControllerTest.this.spec)
+                        .filter(document(DeviceControllerTest.this.DOC_PATH,
+                                resource(
+                                        ResourceSnippetParameters.builder()
+                                                .tag(SNIPPET_TAG)
+                                                .requestSchema(REQUEST_FIELDS_SCHEMA)
+                                                .requestFields(REQUEST_FIELDS)
+                                                .responseSchema(RESPONSE_FIELDS_SCHEMA)
+                                                .responseFields(RESPONSE_FIELDS)
+                                                .summary("UPDATE")
+                                                .description("API to request update of device")
+                                                .build()
+                                ),
+                                pathParameters(
+                                        parameterWithName("deviceId").description("Device ID")
+                                )))
+                        .accept(MediaType.APPLICATION_JSON_VALUE)
+                        .header("Content-type", "application/json")
+                        .body(requestDeviceDTO)
+                        .log()
+                        .all()
+                        .when()
+                        .patch(REQUEST_MAPPING_PATH + "/{deviceId}", Describe_update_api.this.contentId)
+                        .then()
+                        .statusCode(HttpStatus.OK.value())
+                        .body("statusClassification",
+                                Matchers.equalTo(DeviceStatusClassification.REAPER_DEVICE.name()))
+                        .body("osClassification",
+                                Matchers.equalTo(DeviceOsClassification.IOS_OS.name()))
+                        .body("typeClassification",
+                                Matchers.equalTo(DeviceTypeClassification.TABLET.name()))
+                        .body("sn",
+                                Matchers.equalTo("000099"))
+                        .body("modelName",
+                                Matchers.equalTo("testModel1"));
+            }
+        }
 
-        given(this.spec)
-                .filter(document(DEFAULT_DOC_PATH,
-                        pathParameters(
-                                parameterWithName("deviceId").description("Device ID")
-                        )))
-                .accept(MediaType.APPLICATION_JSON_VALUE)
-                .header("Content-type", "application/json")
-                .log()
-                .all()
-                .when()
-                .delete("/api/devices/{deviceId}", 1)
-                .then()
-                .statusCode(HttpStatus.NO_CONTENT.value());
+        @Nested
+        class Describe_delete_api {
+            private final int contentId = 3;
+            private final int withoutContentId = 20;
+
+            @Nested
+            class Context_without_content {
+                @Test
+                void it_returns_bad_request() {
+
+                    given(DeviceControllerTest.this.spec)
+                            .accept(MediaType.APPLICATION_JSON_VALUE)
+                            .header("Content-type", "application/json")
+                            .log()
+                            .all()
+                            .when()
+                            .patch(REQUEST_MAPPING_PATH + "/{deviceId}", Describe_delete_api.this.withoutContentId)
+                            .then()
+                            .statusCode(HttpStatus.BAD_REQUEST.value());
+                }
+            }
+
+            @Nested
+            class Context_with_content {
+                @Test
+                void it_returns_no_content() {
+                    given(DeviceControllerTest.this.spec)
+                            .filter(document(DeviceControllerTest.this.DOC_PATH,
+                                    resource(
+                                            ResourceSnippetParameters.builder()
+                                                    .tag(SNIPPET_TAG)
+                                                    .requestSchema(null)
+                                                    .responseSchema(null)
+                                                    .summary("DELETE")
+                                                    .description("API to request deletion of device information")
+                                                    .build()
+
+                                    ),
+                                    pathParameters(
+                                            parameterWithName("deviceId").description("Device ID")
+                                    )))
+                            .accept(MediaType.APPLICATION_JSON_VALUE)
+                            .header("Content-type", "application/json")
+                            .log()
+                            .all()
+                            .when()
+                            .delete(REQUEST_MAPPING_PATH + "/{deviceId}", Describe_delete_api.this.contentId)
+                            .then()
+                            .statusCode(HttpStatus.NO_CONTENT.value());
+                }
+            }
+        }
     }
 }
