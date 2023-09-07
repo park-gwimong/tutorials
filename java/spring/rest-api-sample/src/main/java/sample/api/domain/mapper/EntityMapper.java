@@ -1,7 +1,11 @@
 package sample.api.domain.mapper;
 
 public interface EntityMapper<E, D> {
-    E toEntity(final D dto);
+    default E toEntity(final D dto) throws IllegalAccessException {
+        throw new IllegalAccessException();
+    }
 
-    D toDto(final E entity);
+    default D toDto(final E entity) throws IllegalAccessException {
+        throw new IllegalAccessException();
+    }
 }

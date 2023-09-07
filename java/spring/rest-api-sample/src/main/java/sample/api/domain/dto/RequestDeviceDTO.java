@@ -35,7 +35,7 @@ public class RequestDeviceDTO extends BaseRequestDTO<DeviceEntity, RequestDevice
     private String deviceUsed;
 
     @Override
-    public DeviceEntity toEntity() {
+    public DeviceEntity toEntity() throws IllegalAccessException {
         return RequestDeviceMapper.MAPPER.toEntity(this);
     }
 

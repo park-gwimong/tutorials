@@ -10,4 +10,10 @@ import sample.api.domain.entity.DeviceEntity;
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ResponseDeviceMapper extends EntityMapper<DeviceEntity, ResponseDeviceDTO> {
     ResponseDeviceMapper MAPPER = Mappers.getMapper(ResponseDeviceMapper.class);
+
+    @Override
+    DeviceEntity toEntity(final ResponseDeviceDTO dto);
+
+    @Override
+    ResponseDeviceDTO toDto(final DeviceEntity entity);
 }
