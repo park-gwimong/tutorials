@@ -1,6 +1,5 @@
 package sample.api.controller;
 
-import com.fasterxml.jackson.annotation.JsonView;
 import org.springframework.web.bind.annotation.*;
 import sample.api.domain.dto.RequestDeviceDTO;
 import sample.api.domain.dto.ResponseDeviceDTO;
@@ -37,7 +36,6 @@ public class DeviceApiController {
     // Create
     // ==========================================================================================
 
-    //@JsonView({DeviceEntity.class})
     @PostMapping(value = {""})
     public ResponseEntity<ResponseDeviceDTO> createDevice(@RequestBody final RequestDeviceDTO requestDeviceDto,
                                                           BindingResult bindingResult)
@@ -102,7 +100,6 @@ public class DeviceApiController {
      * @return the response entity
      * @throws UnknownException the unknown exception
      */
-    //@JsonView({DeviceEntity.class})
     @GetMapping(value = {"/{deviceId}"})
     public ResponseEntity<ResponseDeviceDTO> readDevice(
             @PathVariable("deviceId") final int deviceId)
@@ -134,7 +131,6 @@ public class DeviceApiController {
      * @return the response entity
      * @throws Throwable the throwable
      */
-    //@JsonView(ResponseDeviceDTO.class)
     @PatchMapping(value = {"/{deviceId}"})
     public ResponseEntity<ResponseDeviceDTO> patchDevice(
             @PathVariable("deviceId") final int deviceId,
@@ -173,7 +169,6 @@ public class DeviceApiController {
      * @throws NullPointerException the null pointer exception
      * @throws UnknownException     the unknown exception
      */
-    //@JsonView(ResponseDeviceDTO.class)
     @DeleteMapping(value = {"/{deviceId}"})
     public ResponseEntity<ResponseDeviceDTO> deleteDevice(
             @PathVariable("deviceId") final int deviceId)
@@ -204,7 +199,6 @@ public class DeviceApiController {
      * @return the response entity
      * @throws Exception the exception
      */
-    //@JsonView(ResponseDeviceDTO.class)
     @DeleteMapping(value = {""})
     public ResponseEntity<ResponseDeviceDTO> deleteAllDevice() throws Exception {
         try {
