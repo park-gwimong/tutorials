@@ -13,7 +13,7 @@ public class ValidationException extends Exception {
    * Instantiates a new Validation exception.
    */
   public ValidationException() {
-    super(ExceptionMessages.DefaultException);
+    super(ExceptionMessages.DEFAULT_EXCEPTION);
   }
 
   /**

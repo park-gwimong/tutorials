@@ -13,7 +13,7 @@ public class DatabaseException extends Exception {
    * Instantiates a new Database exception.
    */
   public DatabaseException() {
-    super(ExceptionMessages.DBException);
+    super(ExceptionMessages.DB_EXCEPTION);
   }
 
   /**
@@ -22,7 +22,7 @@ public class DatabaseException extends Exception {
    * @param exception the exception
    */
   public DatabaseException(Throwable exception) {
-    super(ExceptionMessages.DBException, exception);
+    super(ExceptionMessages.DB_EXCEPTION, exception);
   }
 
   /**

@@ -13,7 +13,7 @@ public class NotFoundException extends Exception {
    * Instantiates a new Not found exception.
    */
   public NotFoundException() {
-    super(ExceptionMessages.NotFoundException);
+    super(ExceptionMessages.NOT_FOUND_EXCEPTION);
   }
 
   /**

@@ -13,7 +13,7 @@ public class NotSupportException extends Exception {
    * Instantiates a new Not support exception.
    */
   public NotSupportException() {
-    super(ExceptionMessages.DBException);
+    super(ExceptionMessages.DB_EXCEPTION);
   }
 
   /**
@@ -22,7 +22,7 @@ public class NotSupportException extends Exception {
    * @param exception the exception
    */
   public NotSupportException(Throwable exception) {
-    super(ExceptionMessages.DBException, exception);
+    super(ExceptionMessages.DB_EXCEPTION, exception);
   }
 
   /**

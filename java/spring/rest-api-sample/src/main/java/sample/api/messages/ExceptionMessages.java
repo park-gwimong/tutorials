@@ -5,39 +5,43 @@ package sample.api.messages;
  */
 public class ExceptionMessages {
 
-  /**
-   * The constant DefaultException.
-   */
-  public static String DefaultException = "Exception occurred.";
+    private ExceptionMessages() throws IllegalAccessException {
+        throw new IllegalAccessException("Messages class");
+    }
 
-  /**
-   * The constant NotFoundException.
-   */
-  public static String NotFoundException = "The requested data could not be found.";
+    /**
+     * The constant DefaultException.
+     */
+    public static final String DEFAULT_EXCEPTION = "Exception occurred.";
 
-  /**
-   * The constant NullPointerException.
-   */
-  public static String NullPointerException = "Exception Null";
+    /**
+     * The constant NotFoundException.
+     */
+    public static final String NOT_FOUND_EXCEPTION = "The requested data could not be found.";
 
-  /**
-   * The constant ServletException.
-   */
-  public static String ServletException = "Exception Servlet";
+    /**
+     * The constant NullPointerException.
+     */
+    public static final String NULL_POINTER_EXCEPTION = "Exception Null";
 
-  /**
-   * The constant IOException.
-   */
-  public static String IOException = "Exception occurred while input-ouput";
+    /**
+     * The constant ServletException.
+     */
+    public static final String SERVLET_EXCEPTION = "Exception Servlet";
 
-  /**
-   * The constant DBException.
-   */
-  public static String DBException = "Exception occurred while databases";
+    /**
+     * The constant IOException.
+     */
+    public static final String IO_EXCEPTION = "Exception occurred while input-ouput";
 
-  /**
-   * The constant PermissionException.
-   */
-  public static String PermissionException = "Not have permission";
+    /**
+     * The constant DBException.
+     */
+    public static final String DB_EXCEPTION = "Exception occurred while databases";
+
+    /**
+     * The constant PermissionException.
+     */
+    public static final String PERMISSION_EXCEPTION = "Not have permission";
 
 }

@@ -13,7 +13,7 @@ public class UnknownException extends Exception {
    * Instantiates a new Unknown exception.
    */
   public UnknownException() {
-    super(ExceptionMessages.DefaultException);
+    super(ExceptionMessages.DEFAULT_EXCEPTION);
   }
 
 

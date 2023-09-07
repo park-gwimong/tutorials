@@ -13,7 +13,7 @@ public class HaveChildrenException extends Exception {
    * Instantiates a new Have children exception.
    */
   public HaveChildrenException() {
-    super(ExceptionMessages.DBException);
+    super(ExceptionMessages.DB_EXCEPTION);
   }
 
   /**
@@ -22,7 +22,7 @@ public class HaveChildrenException extends Exception {
    * @param exception the exception
    */
   public HaveChildrenException(Throwable exception) {
-    super(ExceptionMessages.DBException, exception);
+    super(ExceptionMessages.DB_EXCEPTION, exception);
   }
 
   /**
