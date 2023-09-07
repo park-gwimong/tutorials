@@ -1,6 +1,13 @@
 package sample.api.config;
 
+import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import sample.api.interceptror.ControllerInterceptor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -64,6 +71,19 @@ public class WebMvcConfig implements WebMvcConfigurer {
     registry.addInterceptor(new ControllerInterceptor())//
         .addPathPatterns("/**")
         .excludePathPatterns("/docs/**");
+  }
+
+  @Override
+  public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+    converters.add(mappingJackson2HttpMessageConverter());
+  }
+
+  @Bean
+  public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
+    Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+    builder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    builder.dateFormat(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+    return new MappingJackson2HttpMessageConverter(builder.build());
   }
 }
 

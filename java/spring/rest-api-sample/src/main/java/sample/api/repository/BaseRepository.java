@@ -11,6 +11,6 @@ import org.springframework.data.repository.NoRepositoryBean;
  * @param <ID> the type parameter
  */
 @NoRepositoryBean
-public interface DefaultRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
+public interface BaseRepository<T, ID extends Serializable> extends JpaRepository<T, ID> {
 
 }

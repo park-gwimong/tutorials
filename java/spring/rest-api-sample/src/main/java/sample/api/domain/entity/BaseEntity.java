@@ -1,7 +1,6 @@
 package sample.api.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonView;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
@@ -25,7 +24,7 @@ public abstract class BaseEntity implements Serializable {
   /**
    * The Created at.
    */
-  @JsonView({DeviceEntity.class})
+//  @JsonView({DeviceEntity.class})
   @CreatedDate
   @JsonFormat(shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss",
@@ -37,7 +36,7 @@ public abstract class BaseEntity implements Serializable {
   /**
    * The Updated at.
    */
-  @JsonView({DeviceEntity.class})
+//  @JsonView({DeviceEntity.class})
   @LastModifiedDate
   @JsonFormat(shape = JsonFormat.Shape.STRING,
       pattern = "yyyy-MM-dd'T'HH:mm:ss",

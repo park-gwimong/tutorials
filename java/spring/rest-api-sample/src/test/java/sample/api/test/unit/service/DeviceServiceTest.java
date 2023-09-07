@@ -16,7 +16,7 @@ import sample.api.exception.DatabaseException;
 import sample.api.exception.NotFoundException;
 import sample.api.repository.DeviceRepository;
 import sample.api.service.DeviceService;
-import sample.api.service.DeviceServiceImpl;
+import sample.api.service.impl.DeviceServiceImpl;
 import sample.api.domain.enums.device.code.status.DeviceStatusCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
