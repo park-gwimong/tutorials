@@ -1,0 +1,19 @@
+# Spring config
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  mvc:
+    static-path-pattern: /templates/**
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+# Server config
+server:
+  port: 9001
+  error:
+    whitelabel:
+      enabled: false
+  servlet:
+    session:
+      timeout: -1
