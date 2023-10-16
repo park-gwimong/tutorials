@@ -29,17 +29,17 @@ public class MessageWebSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(@NotNull WebSocketSession session) {
+    public void afterConnectionEstablished(@NotNull @org.jetbrains.annotations.NotNull WebSocketSession session) {
         messageChatRoomRepository.join(session, "test");
     }
 
     @Override
-    public void afterConnectionClosed(@NotNull WebSocketSession session, @NotNull CloseStatus status) {
+    public void afterConnectionClosed(@NotNull @org.jetbrains.annotations.NotNull WebSocketSession session, @NotNull CloseStatus status) {
         messageChatRoomRepository.leaveAll(session);
     }
 
     @Override
-    protected void handleTextMessage(@NotNull WebSocketSession session, @NotNull TextMessage message) throws JsonProcessingException {
+    protected void handleTextMessage(@NotNull @org.jetbrains.annotations.NotNull WebSocketSession session, @NotNull TextMessage message) throws JsonProcessingException {
         String payload = message.getPayload();
         MessageChat messageChat = objectMapper.readValue(payload, MessageChat.class);
         Map<String, ChatRoom> rooms = messageChatRoomRepository.get();

@@ -22,8 +22,6 @@ plugins {
 
 group = 'websocket-sample'
 version = 'v1.000-SNAPSHOT'
-sourceCompatibility = 11
-
 
 repositories {
     mavenCentral()
